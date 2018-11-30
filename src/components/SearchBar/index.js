@@ -7,15 +7,23 @@ import throttle from '../../utils/throttle';
 
 const styles = StyleSheet.create({
   container: {
-    height: 60,
-    borderColor: 'red',
-    borderWidth: 1,
-    padding: 10,
+    height: 95,
+    paddingTop: 50,
+    paddingBottom: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#f1f1f1',
+    borderColor: '#ddd',
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 1,
   },
   input: {
     flex: 1,
+    backgroundColor: '#fcfcfc',
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 3,
     padding: 10,
   },
 });
@@ -27,9 +35,9 @@ class SearchBar extends React.PureComponent {
 
   handleChange = (input) => {
     console.log(input);
-    this.setState({query: input});
+    this.setState({ query: input });
     this.props.search(input);
-  }
+  };
 
   render() {
     return (
@@ -46,7 +54,7 @@ class SearchBar extends React.PureComponent {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  search: throttle((query) => dispatch(makeSearchReq(query)), 2000, true),
+  search: throttle((query) => dispatch(makeSearchReq(query)), 450, true),
 });
 
 export default connect(

@@ -10,3 +10,4 @@ export const makeSearchRequest = (string) =>
     method: 'get',
     headers: HEADERS,
   });
+

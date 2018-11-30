@@ -14,7 +14,7 @@ const throttle = (fn, ms, preThrottled = false) => {
       runOnce = false;
       setTimeout(() => {
         throttled = false;
-        console.log("### RUNONCE RUNNING");
+        console.log('### RUNONCE RUNNING');
 
         if (savedArgs) {
           return _innerThrottle.apply(savedContext, savedArgs);
@@ -24,7 +24,7 @@ const throttle = (fn, ms, preThrottled = false) => {
     }
 
     if (throttled) {
-      console.log("### REQ THROTTLED");
+      console.log('### REQ THROTTLED');
       savedContext = this;
       savedArgs = args;
 
@@ -39,12 +39,12 @@ const throttle = (fn, ms, preThrottled = false) => {
       throttled = false;
 
       if (savedArgs) {
-        console.log("### REQ RUN FROM TIMEOUT");
+        console.log('### REQ RUN FROM TIMEOUT');
         return _innerThrottle.apply(savedContext, savedArgs);
       }
     }, ms);
 
-    console.log("### REQ NOT THROTTLED");
+    console.log('### REQ NOT THROTTLED');
     return fn.apply(this, args);
   };
 };

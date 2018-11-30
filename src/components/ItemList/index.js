@@ -1,52 +1,48 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { makeSearchReq } from '../../store/actions';
-import { throttle } from '../../utils/throttle';
-
-// TODO: EVERYTHING
+import { FlatList, StyleSheet, Text } from 'react-native';
+import Item from '../Item';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // backgroundColor: '#F5FCFF',
+    marginTop: 4,
   },
   list: {
-    flex: 1,
-    // height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
 });
 
-class ItemList extends React.PureComponent {
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          style={styles.input}
-          value={this.state.query}
-          placeholder="Search recipes"
-          onChange={this.props.handleChange}
-        />
-      </View>
-    );
+const ItemList = ({ items }) => {
+  if (items && !items.length) {
+    return <Text>No recipes</Text>;
   }
-}
+  return (
+    <FlatList
+      style={styles.container}
+      contentContainerStyle={styles.list}
+      data={items}
+      renderItem={({ item }) => <Item item={item} />}
+      keyExtractor={(item) => item.href}
+    />
+  );
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  handleChange: (input) => throttle(dispatch(makeSearchReq(input)), 450),
+const mapStateToProps = (store) => ({
+  items: store.items,
 });
 
 export default connect(
+  mapStateToProps,
   null,
-  mapDispatchToProps,
 )(ItemList);
 
+ItemList.defaultProps = {
+  items: [],
+};
+
 ItemList.propTypes = {
-  handleChange: PropTypes.func.isRequired,
+  items: PropTypes.array,
 };
