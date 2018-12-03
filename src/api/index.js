@@ -5,9 +5,8 @@ const HEADERS = {
   'Content-Type': 'application/json',
 };
 
-export const makeSearchRequest = (string) =>
-  fetch(`${API_URL}/?q=${string}`, {
+export const makeSearchRequest = (query, page = 1) =>
+  fetch(`${API_URL}/?q=${query}&p=${page}`, {
     method: 'get',
     headers: HEADERS,
   });
-

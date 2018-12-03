@@ -1,37 +1,20 @@
-/* eslint-disable consistent-return */
-
-const throttle = (fn, ms, preThrottled = false) => {
-  let throttled = preThrottled;
-
-  let runOnce = true;
-
+const throttleWithDelay = (fn, ms) => {
+  let throttled = false;
   let savedContext = null;
   let savedArgs = null;
 
+  let firstRun = true;
+
   return function _innerThrottle(...args) {
-    // TODO: rewrite runOnce
-    if (preThrottled && runOnce) {
-      runOnce = false;
-      setTimeout(() => {
-        throttled = false;
-        console.log('### RUNONCE RUNNING');
-
-        if (savedArgs) {
-          return _innerThrottle.apply(savedContext, savedArgs);
-        }
-      }, ms);
-      return;
-    }
-
     if (throttled) {
-      console.log('### REQ THROTTLED');
       savedContext = this;
       savedArgs = args;
 
-      return;
+      return null;
     }
 
     throttled = true;
+
     savedContext = null;
     savedArgs = null;
 
@@ -39,14 +22,21 @@ const throttle = (fn, ms, preThrottled = false) => {
       throttled = false;
 
       if (savedArgs) {
-        console.log('### REQ RUN FROM TIMEOUT');
         return _innerThrottle.apply(savedContext, savedArgs);
       }
+      return null;
     }, ms);
 
-    console.log('### REQ NOT THROTTLED');
+    if (firstRun) {
+      firstRun = false;
+      savedContext = this;
+      savedArgs = args;
+
+      return null;
+    }
+
     return fn.apply(this, args);
   };
 };
 
-export default throttle;
+export default throttleWithDelay;

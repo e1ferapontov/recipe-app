@@ -34,9 +34,10 @@ class SearchBar extends React.PureComponent {
   };
 
   handleChange = (input) => {
-    console.log(input);
     this.setState({ query: input });
-    this.props.search(input);
+    if (input !== '') {
+      this.props.search(input);
+    }
   };
 
   render() {
@@ -54,7 +55,7 @@ class SearchBar extends React.PureComponent {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  search: throttle((query) => dispatch(makeSearchReq(query)), 450, true),
+  search: throttle((query) => dispatch(makeSearchReq(query)), 450),
 });
 
 export default connect(
